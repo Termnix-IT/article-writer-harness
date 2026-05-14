@@ -1,0 +1,21 @@
+# User content — keep folders, ignore contents
+sources/*
+!sources/.gitkeep
+
+articles/qiita/*
+!articles/qiita/.gitkeep
+articles/note/*
+!articles/note/.gitkeep
+articles/zenn/*
+!articles/zenn/.gitkeep
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+.idea/
+
+# Claude Code local settings
+.claude/settings.local.json
