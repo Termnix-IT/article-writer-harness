@@ -4,14 +4,22 @@
 
 ## 使い方
 
-1. `sources/{project-name}/` フォルダを作り、記事のもとになるファイルを置く
-   - コード、README、メモ、下書き（`.md` / `.txt`）、画像など
-2. Claude Code を起動し、以下のように指示する
-   - 「`sources/my-app` から Qiita 記事を書いて」
-   - 「Note用にこのフォルダから書いて」
-   - 「Zennで投稿したい」
+入力ソースは2通り：
+
+### A. ローカルモード（推奨）
+1. `sources/{project-name}/` フォルダを作り、記事のもとになるファイルを置く（コード・README・メモ・下書き・画像など）
+2. Claude Code を起動し「`sources/my-app` から Qiita 記事を書いて」のように指示
+
+### B. 外部パスモード
+ObsidianのVaultや別の場所にあるプロジェクトを資料として参照できる（**読み取り専用**、書き込みは行わない）。
+- 「Obsidian の `D:\ObsidianVault\TechNotes\react-hooks` を元に Zenn 記事を書いて」
+- 「`~/projects/my-app` を読み込んで Qiita 記事にして」
+
+Vaultなど大きい場合は、特定ファイル・サブフォルダ・タグでスコープ指定するとよい。
+
+### 共通フロー
 3. 対話に従ってプラットフォーム・文体・構成を確定する
-4. 完成記事が `articles/{platform}/{slug}.md` に保存される
+4. 完成記事が `articles/{platform}/{slug}.md`（このharness内）に保存される
 
 ## プラットフォーム
 

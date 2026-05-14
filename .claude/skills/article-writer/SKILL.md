@@ -9,8 +9,10 @@ Generates posts for Qiita / Note / Zenn from source folders inside this harness 
 
 ## Directory contract
 
-- **Input**: `sources/{project-name}/` — user places code, README, memos, drafts, images here.
-- **Output**: `articles/{platform}/{slug}.md` where `platform` is `qiita` | `note` | `zenn`.
+- **Input** (two modes — accept either):
+  - **Local mode (default)**: `sources/{project-name}/` inside this harness — user places code, README, memos, drafts, images here.
+  - **External path mode**: any absolute path the user supplies (e.g. an Obsidian vault folder, a project repo elsewhere on disk). Read-only — never write back to this path.
+- **Output**: `articles/{platform}/{slug}.md` where `platform` is `qiita` | `note` | `zenn`. Output **always** stays inside this harness regardless of input mode.
 
 ## Workflow
 
@@ -34,11 +36,16 @@ If the user's initial message already contains a platform hint (e.g. "Qiita用�
 
 Confirm the following (ask if missing):
 
-- **Source folder**: which folder under `sources/` (e.g. `sources/my-app`).
-  - If `sources/` is empty or missing, tell the user to place files under `sources/{project-name}/` and stop.
+- **Source location** — accept either of:
+  - A folder under `sources/` (e.g. `sources/my-app`) — local mode
+  - An absolute external path (e.g. `D:\ObsidianVault\TechNotes\my-topic`) — external path mode
+  - Heuristic: if the user's instruction contains an absolute path or mentions Obsidian / a vault / an external folder, use external mode. Otherwise default to local mode and look under `sources/`.
+  - If local mode and `sources/` is empty/missing, tell the user to either place files under `sources/{project-name}/` **or** provide an external absolute path, then stop.
+  - Verify the resolved path exists before continuing. If it does not, ask the user to re-specify.
 - **Article direction**: e.g. "Python で API を叩く初心者向け", "社内ツール紹介" etc.
-- **Drafts / idea memos**: `.md` / `.txt` notes inside the source folder. Skip if none.
-- **Images to include**: image files under the source folder. Skip if none.
+- **Specific files / notes to focus on** (optional): in external-path mode the folder may be large (entire Obsidian vault). Ask whether to focus on specific files, a subfolder, or a tag — and read only those. Default to a sensible subset if not specified.
+- **Drafts / idea memos**: `.md` / `.txt` notes inside the source location. Skip if none.
+- **Images to include**: image files under the source location. Skip if none.
 
 ### Step 3: Run the Analyzer agent
 
@@ -116,8 +123,9 @@ After saving, tell the user (in Japanese):
 
 ## Rules
 
-- Never invent features or specs that are not in the source folder.
+- Never invent features or specs that are not in the source location.
 - Ask the user when uncertain.
 - Never auto-post to any platform.
-- Output **must** go to `articles/{platform}/`. Never write into the source folder.
+- Output **must** go to `articles/{platform}/`. Never write into the source location — including external paths like Obsidian vaults (treat them as strictly read-only).
+- In external-path mode, do not copy source files into the harness; just read and reference. If the user wants a portable archive, they should ask explicitly.
 - Dialog text shown to the user stays in Japanese. Instructions in this file remain English to save tokens.

@@ -10,7 +10,8 @@ Reads files in a source folder under `sources/` and returns structured informati
 
 ## Inputs
 
-- Source folder absolute path (`sources/{project}/`)
+- Source absolute path — either under `sources/{project}/` (local mode) or an external folder such as an Obsidian vault (external path mode). Treat external paths as **read-only**.
+- Optional scope hint: specific files / subfolder / tag to focus on (used when the source is large, e.g. a whole vault).
 - Article direction (string)
 - Target platform: `qiita` | `note` | `zenn`
 
@@ -27,6 +28,12 @@ Priority order:
 5. Other text files
 
 Skip binaries. If many files, sample representatives.
+
+**Obsidian / vault-style sources:**
+- Resolve `[[wikilinks]]` to their target notes within the same vault when relevant to the article topic; do not follow links outside the vault.
+- Treat `#tags` as hints about topic/category — useful for tag/topic candidate suggestion.
+- Ignore `.obsidian/`, `.trash/`, and other tooling/system folders.
+- If a scope hint (specific files / subfolder / tag) was provided, restrict reading to that scope.
 
 **Memo reading notes:**
 - Even bullet/scrap notes carry intent — read carefully.
