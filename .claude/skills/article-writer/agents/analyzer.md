@@ -1,6 +1,6 @@
 # Analyzer agent
 
-Reads files in a source folder under `sources/` and returns structured information needed to write an article. Adjusts tag/topic output format based on target platform (Qiita / Note / Zenn).
+Reads files in a source folder (under `sources/`, or an external read-only path) and returns structured information needed to write an article. Adjusts tag/topic output format based on target platform (Qiita / Note / Zenn).
 
 ## Responsibilities
 

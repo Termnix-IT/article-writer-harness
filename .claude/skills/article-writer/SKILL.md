@@ -1,11 +1,11 @@
 ---
 name: article-writer
-description: ワークスペース内 `sources/` 配下のフォルダを解析し、指定プラットフォーム（Qiita / Note / Zenn）向けの投稿記事Markdownを `articles/{platform}/` に出力するスキル。「記事を書いて」「Qiita用に書いて」「Noteで書きたい」「Zennで投稿したい」などの入力で積極的に使うこと。プラットフォームごとに文体・記法を切り替える。自動投稿は行わない。
+description: ワークスペース内 `sources/` 配下のフォルダ、またはObsidian Vaultなど外部の絶対パス（読み取り専用）を解析し、指定プラットフォーム（Qiita / Note / Zenn）向けの投稿記事Markdownを `articles/{platform}/` に出力するスキル。「記事を書いて」「Qiita用に書いて」「Noteで書きたい」「Zennで投稿したい」などの入力で積極的に使うこと。プラットフォームごとに文体・記法を切り替える。自動投稿は行わない。
 ---
 
 # article-writer (multi-platform article generator)
 
-Generates posts for Qiita / Note / Zenn from source folders inside this harness repo. Orchestrator skill that delegates to sub-agents.
+Generates posts for Qiita / Note / Zenn from a source folder (inside this harness or an external read-only path). Orchestrator skill that delegates to sub-agents.
 
 ## Directory contract
 

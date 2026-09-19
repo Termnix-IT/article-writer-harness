@@ -1,50 +1,13 @@
 # NetArticle — 記事執筆ハーネス
 
-ワークスペース内のソースをもとに、Claude Code が **Qiita / Note / Zenn** 向けの記事を自動生成するためのharness。
+手元のコードやメモ、ObsidianのVaultなどを資料として渡すと、Claude Code の `article-writer` スキルが Qiita / Note / Zenn 向けの記事Markdownを書き起こすためのハーネスです。投稿は自動では行わないので、生成されたMarkdownは各プラットフォームに手動で貼り付けて投稿してください。
 
 ## 使い方
 
-入力ソースは2通り：
+資料の渡し方は2通りあります。ひとつは、このリポジトリの `sources/{project-name}/` にコード・README・下書きメモ・画像などを置き、Claude Code に「`sources/my-app` から Qiita 記事を書いて」と頼む方法です。もうひとつは、ObsidianのVaultや別の場所にあるプロジェクトを絶対パスで指定する方法で、「`D:\ObsidianVault\TechNotes\react-hooks` を元に Zenn 記事を書いて」のように頼みます。外部パスは読み取り専用として扱われ、スキルがそこへ書き込むことはありません。Vault全体のように資料が大きい場合は、ファイル・サブフォルダ・タグで範囲を指定すると、記事に関係のないノートまで読み込まずに済みます。
 
-### A. ローカルモード（推奨）
-1. `sources/{project-name}/` フォルダを作り、記事のもとになるファイルを置く（コード・README・メモ・下書き・画像など）
-2. Claude Code を起動し「`sources/my-app` から Qiita 記事を書いて」のように指示
+どちらの場合も、スキルがプラットフォーム・文体・記事構成を順に確認してくるので、それに答えると完成した記事がこのリポジトリの `articles/{platform}/{slug}.md` に保存されます。`sources/` と `articles/` の中身は `.gitignore` で除外しているため、資料や記事がこのリポジトリにコミットされることはありません。
 
-### B. 外部パスモード
-ObsidianのVaultや別の場所にあるプロジェクトを資料として参照できる（**読み取り専用**、書き込みは行わない）。
-- 「Obsidian の `D:\ObsidianVault\TechNotes\react-hooks` を元に Zenn 記事を書いて」
-- 「`~/projects/my-app` を読み込んで Qiita 記事にして」
+## プラットフォームごとの書き分け
 
-Vaultなど大きい場合は、特定ファイル・サブフォルダ・タグでスコープ指定するとよい。
-
-### 共通フロー
-3. 対話に従ってプラットフォーム・文体・構成を確定する
-4. 完成記事が `articles/{platform}/{slug}.md`（このharness内）に保存される
-
-## プラットフォーム
-
-| プラットフォーム | 出力先 | 特徴 |
-|---|---|---|
-| Qiita | `articles/qiita/` | 技術記事・タグ・`:::note` 記法 |
-| Note | `articles/note/` | 読み物寄り・ハッシュタグ・文章主体 |
-| Zenn | `articles/zenn/` | 技術記事・topics/type・章立て |
-
-## ディレクトリ構成
-
-```
-NetArticle/
-├── .claude/skills/article-writer/   # スキル本体
-│   ├── SKILL.md
-│   └── agents/
-│       ├── analyzer.md
-│       ├── writer-qiita.md
-│       ├── writer-note.md
-│       └── writer-zenn.md
-├── sources/        # 入力（ユーザーが配置）
-└── articles/       # 出力
-    ├── qiita/
-    ├── note/
-    └── zenn/
-```
-
-自動投稿は行いません。生成されたMarkdownを各プラットフォームに手動で投稿してください。
+Qiita と Zenn はどちらも技術記事向けなので、frontmatter付きでコード中心の記事を出力します。Qiita ではタグと `:::note` による補足を使い、Zenn では `topics` / `type` / `emoji` を frontmatter に書いたうえで `:::message` や `:::details` などの独自記法を使います。Note は読み物寄りのプラットフォームなので、frontmatterを付けずにコードを控えめにして文章中心で書き、ハッシュタグは本文の末尾に並べます。
