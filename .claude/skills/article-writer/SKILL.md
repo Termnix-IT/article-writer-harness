@@ -115,7 +115,7 @@ Save the article to `articles/{platform}/{slug}.md`.
 After saving, tell the user (in Japanese):
 - The saved file path
 - Posting instructions:
-  - Qiita: ログイン → 新規投稿 → Markdownをペースト or インポート
+  - Qiita: qiita-cli-articles リポジトリ（`ProjectFolder\WebProject\qiita-cli-articles`）で `npx qiita new <ファイル名>` でひな形を作り、本文と `title`・`tags` を写す（ハーネスの出力をそのままコピーしない）。`ignorePublish: true` のまま `npm run preview` で確認し、`false` にして push すると GitHub Actions が投稿する。投稿後は `git pull`。手元の CLI からは投稿しない。詳細は README の「Qiita への投稿（Qiita CLI 連携）」。
   - Note: ログイン → 新規記事 → 本文をペースト（frontmatterは取り除く）
   - Zenn: `zenn-cli` または GitHub 連携、または直接ペースト
 

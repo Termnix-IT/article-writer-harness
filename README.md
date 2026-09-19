@@ -8,6 +8,14 @@
 
 どちらの場合も、スキルがプラットフォーム・文体・記事構成を順に確認してくるので、それに答えると完成した記事がこのリポジトリの `articles/{platform}/{slug}.md` に保存されます。`sources/` と `articles/` の中身は `.gitignore` で除外しているため、資料や記事がこのリポジトリにコミットされることはありません。
 
+## Qiita への投稿（Qiita CLI 連携）
+
+Qiita 向けの記事は、Qiita CLI で記事を管理する別リポジトリ [qiita-cli-articles](https://github.com/Termnix-IT/qiita-cli-articles)（private、ローカルは `ProjectFolder\WebProject\qiita-cli-articles`）に移して投稿します。このリポジトリは `main` への push をきっかけに GitHub Actions が `public/` 内の記事を Qiita へ投稿・更新する構成になっているので、手元の CLI から投稿する必要はありません。手元で投稿してから push すると同じ記事を二重に処理することになるため、投稿は push だけで行ってください。
+
+移すときは、qiita-cli-articles で `npx qiita new <ファイル名>` を実行して `public/` にひな形を作り、このハーネスの `articles/qiita/` に出力された記事の本文と `title`・`tags` をそこへ写します。ひな形の frontmatter には Qiita CLI が使う `id` や `ignorePublish` などの項目が含まれているので、ハーネスの出力をそのままコピーせず、ひな形を残したまま中身を入れ替えます。最初は `ignorePublish: true` にしておくと、push しても投稿されないので、`npm run preview`（`http://localhost:8888`）で見た目を確認できます。問題がなければ `ignorePublish: false` に変えて push すると、Actions が投稿し、frontmatter に `id` と `updated_at` を書き込んだコミットを push し返します。次の作業の前に必ず `git pull` してください。
+
+投稿済みの記事を Qiita の画面で削除した場合は、対応するファイルの `id` を `null`、`updated_at` を `''` に戻してください。古い `id` が残っていると、Actions が存在しない記事を更新しようとして「記事が見つかりませんでした」で失敗します。なお、qiita-cli-articles は Qiita 上の既存記事も `public/` に取り込んで管理しているため、それらのファイルを編集して push すると Qiita 上の記事も更新されます。
+
 ## プラットフォームごとの書き分け
 
 Qiita と Zenn はどちらも技術記事向けなので、frontmatter付きでコード中心の記事を出力します。Qiita ではタグと `:::note` による補足を使い、Zenn では `topics` / `type` / `emoji` を frontmatter に書いたうえで `:::message` や `:::details` などの独自記法を使います。Note は読み物寄りのプラットフォームなので、frontmatterを付けずにコードを控えめにして文章中心で書き、ハッシュタグは本文の末尾に並べます。
