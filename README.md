@@ -12,9 +12,9 @@
 
 Qiita 向けの記事は、Qiita CLI で記事を管理する別リポジトリ [qiita-cli-articles](https://github.com/Termnix-IT/qiita-cli-articles)（private、ローカルは `ProjectFolder\WebProject\qiita-cli-articles`）に移して投稿します。このリポジトリは `main` への push をきっかけに GitHub Actions が `public/` 内の記事を Qiita へ投稿・更新する構成になっているので、手元の CLI から投稿する必要はありません。手元で投稿してから push すると同じ記事を二重に処理することになるため、投稿は push だけで行ってください。
 
-移すときは、qiita-cli-articles で `npx qiita new <ファイル名>` を実行して `public/` にひな形を作り、このハーネスの `articles/qiita/` に出力された記事の本文と `title`・`tags` をそこへ写します。ひな形の frontmatter には Qiita CLI が使う `id` や `ignorePublish` などの項目が含まれているので、ハーネスの出力をそのままコピーせず、ひな形を残したまま中身を入れ替えます。最初は `ignorePublish: true` にしておくと、push しても投稿されないので、`npm run preview`（`http://localhost:8888`）で見た目を確認できます。問題がなければ `ignorePublish: false` に変えて push すると、Actions が投稿し、frontmatter に `id` と `updated_at` を書き込んだコミットを push し返します。次の作業の前に必ず `git pull` してください。
+移すときは、qiita-cli-articles で `npm run new -- <ファイル名>` を実行して `public/` にひな形を作り、このハーネスの `articles/qiita/` に出力された記事の本文と `title`・`tags` をそこへ写します。ひな形の frontmatter には Qiita CLI が使う `id` や `ignorePublish` などの項目が含まれているので、ハーネスの出力をそのままコピーせず、ひな形を残したまま中身を入れ替えます。ハーネスの出力では画像が `./xxx.png` のような相対パスのままになっていますが、Qiita CLI はローカルの画像を扱えないため、Qiita にアップロードした画像の URL に差し替えてから投稿します。
 
-投稿済みの記事を Qiita の画面で削除した場合は、対応するファイルの `id` を `null`、`updated_at` を `''` に戻してください。古い `id` が残っていると、Actions が存在しない記事を更新しようとして「記事が見つかりませんでした」で失敗します。なお、qiita-cli-articles は Qiita 上の既存記事も `public/` に取り込んで管理しているため、それらのファイルを編集して push すると Qiita 上の記事も更新されます。
+プレビュー、`ignorePublish` を使った公開の切り替え、画像のアップロード方法、投稿後の `git pull`、Qiita の画面で記事を直したり削除したりした場合の対処は、qiita-cli-articles の README にまとめています。投稿作業はその README に沿って進めてください。
 
 ## プラットフォームごとの書き分け
 
